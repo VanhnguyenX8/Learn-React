@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useState } from "react";
+import LoginPage from "./pages/LoginPage";
+import TodoPage from "./pages/TodoPage";
 
 function App() {
+  const [user, setUser] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route
+        path="/login"
+        element={<LoginPage onLogin={(username) => setUser(username)} />}
+      />
+      <Route
+        path="/todo"
+        element={
+          user ? (
+            <TodoPage user={user} onLogout={() => setUser(null)} />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      {/* Route mặc định */}
+      <Route path="*" element={<Navigate to="/login" />} />
+    </Routes>
   );
 }
 
